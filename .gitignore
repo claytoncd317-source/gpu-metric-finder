@@ -1,0 +1,17 @@
+# Build outputs
+cpp/build/
+*.o
+*.a
+*.so
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# VS Code
+.vscode/
+
+# CUDA
+*.fatbin
+*.cubin
