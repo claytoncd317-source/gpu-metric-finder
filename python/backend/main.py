@@ -1,5 +1,6 @@
 import asyncio
 import json
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
@@ -64,7 +65,27 @@ async def websocket_endpoint(websocket: WebSocket):
         print("[GPU Monitor] Client disconnected.")
 
 # ---------------------------------------------------------------------------
-# Static files — MUST be mounted last
+# Alert endpoint — sends SMS via AWS SNS
 # ---------------------------------------------------------------------------
 
-app.mount("/", StaticFiles(directory="../../static", html=True), name="static")
+@app.post("/alert")
+async def send_alert(payload: dict):
+    import boto3
+    topic_arn = os.environ.get("SNS_TOPIC_ARN")
+    if not topic_arn:
+        return {"status": "error", "message": "SNS_TOPIC_ARN not set"}
+    sns = boto3.client("sns", region_name=os.environ.get("AWS_DEFAULT_REGION", "us-west-2"))
+    sns.publish(TopicArn=topic_arn, Message=payload["message"])
+    return {"status": "sent"}
+
+# ---------------------------------------------------------------------------
+# Static files — resolve path for both local and Docker environments
+# ---------------------------------------------------------------------------
+
+# Local dev:  running from python/backend/, static is ../../static
+# Docker:     running from /app/backend/, static is /app/static
+static_dir = os.path.join(os.path.dirname(__file__), "..", "..", "static")
+if not os.path.isdir(static_dir):
+    static_dir = "/app/static"
+
+app.mount("/", StaticFiles(directory=static_dir, html=True), name="static")
