@@ -2,29 +2,59 @@ import socket
 import json
 import time
 import threading
-import pynvml
 
 # ---------------------------------------------------------------------------
-# NVML setup
+# NVML setup — graceful fallback if no GPU present (e.g. ECS Fargate)
 # ---------------------------------------------------------------------------
+
+NVML_AVAILABLE = False
+
+try:
+    import pynvml
+    pynvml.nvmlInit()
+    NVML_AVAILABLE = True
+    pynvml.nvmlShutdown()
+except Exception:
+    print("[GPU Monitor] WARNING: NVML not available — running in mock mode (no GPU detected)")
+
 
 def init_nvml():
-    pynvml.nvmlInit()
+    if NVML_AVAILABLE:
+        pynvml.nvmlInit()
+
 
 def shutdown_nvml():
-    pynvml.nvmlShutdown()
+    if NVML_AVAILABLE:
+        pynvml.nvmlShutdown()
+
 
 def get_gpu_metrics(index=0):
+    """
+    Returns live GPU metrics if NVML is available.
+    Returns zeroed mock metrics if running without a GPU (e.g. ECS Fargate on CPU).
+    """
+    if not NVML_AVAILABLE:
+        return {
+            "name":          "No GPU Detected (Mock Mode)",
+            "gpu_util":      0,
+            "vram_used_mb":  0.0,
+            "vram_total_mb": 1.0,   # non-zero to avoid division by zero in dashboard
+            "temperature":   0,
+            "power_w":       0.0,
+            "power_limit_w": 1.0,   # non-zero to avoid division by zero in dashboard
+            "timestamp":     time.time(),
+        }
+
     handle = pynvml.nvmlDeviceGetHandleByIndex(index)
 
     name = pynvml.nvmlDeviceGetName(handle)
     if isinstance(name, bytes):
         name = name.decode("utf-8")
 
-    util = pynvml.nvmlDeviceGetUtilizationRates(handle)
-    mem  = pynvml.nvmlDeviceGetMemoryInfo(handle)
-    temp = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
-    power_mw      = pynvml.nvmlDeviceGetPowerUsage(handle)
+    util      = pynvml.nvmlDeviceGetUtilizationRates(handle)
+    mem       = pynvml.nvmlDeviceGetMemoryInfo(handle)
+    temp      = pynvml.nvmlDeviceGetTemperature(handle, pynvml.NVML_TEMPERATURE_GPU)
+    power_mw       = pynvml.nvmlDeviceGetPowerUsage(handle)
     power_limit_mw = pynvml.nvmlDeviceGetEnforcedPowerLimit(handle)
 
     return {
@@ -37,6 +67,7 @@ def get_gpu_metrics(index=0):
         "power_limit_w": round(power_limit_mw / 1000.0, 1),
         "timestamp":     time.time(),
     }
+
 
 # ---------------------------------------------------------------------------
 # C++ socket client
@@ -79,7 +110,6 @@ class CppSocketClient:
                         if not chunk:
                             break
                         buffer += chunk
-                        # JSON frames are newline delimited
                         while "\n" in buffer:
                             line, buffer = buffer.split("\n", 1)
                             if line.strip():
@@ -89,6 +119,7 @@ class CppSocketClient:
             except (ConnectionRefusedError, OSError):
                 # C++ server not up yet — retry every 2 seconds
                 time.sleep(2)
+
 
 # ---------------------------------------------------------------------------
 # Shared instances
