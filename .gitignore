@@ -1,17 +1,66 @@
-# Build outputs
+# ── C++ Build ──
 cpp/build/
 *.o
 *.a
 *.so
-
-# Python
-__pycache__/
-*.pyc
-.venv/
-
-# VS Code
-.vscode/
-
-# CUDA
 *.fatbin
 *.cubin
+*.ptx
+
+# ── Python ──
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# ── Environment & Secrets ──
+.env
+.env.*
+*.env
+.envrc
+secrets.txt
+credentials.txt
+
+# ── AWS ──
+.aws/
+aws-credentials*
+*.pem
+*.key
+
+# ── Terraform ──
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfstate.d/
+terraform/*.tfvars
+terraform/tfplan
+terraform/.terraform.tfstate.lock.info
+crash.log
+override.tf
+override.tf.json
+
+# ── Docker ──
+.dockerignore
+
+# ── VS Code ──
+.vscode/
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ── Logs ──
+*.log
+logs/
+
+# ── CUDA keyring download ──
+cuda-keyring*.deb
