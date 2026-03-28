@@ -27,3 +27,11 @@ output "vpc_id" {
   description = "VPC ID"
   value       = aws_vpc.main.id
 }
+
+# ── ALB DNS ──
+# Copy this value and paste it as a CNAME record in Cloudflare DNS.
+# This hostname is stable — it never changes even when ECS tasks restart.
+output "alb_dns_name" {
+  description = "Point Cloudflare CNAME to this hostname"
+  value       = aws_lb.app.dns_name
+}

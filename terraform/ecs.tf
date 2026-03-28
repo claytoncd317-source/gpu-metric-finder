@@ -30,6 +30,8 @@ resource "aws_ecs_cluster" "main" {
 }
 
 # ── IAM Role for ECS Task Execution ──
+# Used by the ECS agent to pull images from ECR and push logs to CloudWatch.
+# Separate from the task role — this is infrastructure-level, not app-level.
 resource "aws_iam_role" "ecs_execution" {
   name = "${var.app_name}-ecs-execution-role"
 
@@ -54,6 +56,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution" {
 }
 
 # ── IAM Role for ECS Task (app permissions) ──
+# Assumed by your running container — only grants what the app needs (SNS).
 resource "aws_iam_role" "ecs_task" {
   name = "${var.app_name}-ecs-task-role"
 
@@ -155,6 +158,8 @@ resource "aws_ecs_task_definition" "app" {
 }
 
 # ── ECS Service ──
+# load_balancer wires this service to the ALB target group so ECS
+# automatically registers each new task IP when it starts/restarts.
 resource "aws_ecs_service" "app" {
   name            = "${var.app_name}-service"
   cluster         = aws_ecs_cluster.main.id
@@ -168,9 +173,16 @@ resource "aws_ecs_service" "app" {
     assign_public_ip = true
   }
 
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app.arn
+    container_name   = var.app_name
+    container_port   = var.container_port
+  }
+
   depends_on = [
     aws_iam_role_policy_attachment.ecs_execution,
     aws_iam_role_policy.ecs_task_sns,
+    aws_lb_listener.http,
   ]
 
   tags = {
