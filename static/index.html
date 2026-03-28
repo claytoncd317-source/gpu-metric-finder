@@ -36,72 +36,86 @@
   header {
     position: relative; z-index: 10;
     display: flex; align-items: center; justify-content: space-between;
-    padding: 20px 40px;
+    padding: 16px 24px;
     border-bottom: 1px solid var(--border2);
+    gap: 12px;
+    flex-wrap: wrap;
   }
 
-  .brand { display: flex; align-items: center; gap: 18px; }
+  .brand { display: flex; align-items: center; gap: 14px; }
 
   .brand-icon {
-    width: 48px; height: 48px;
+    width: 40px; height: 40px;
     border: 1px solid var(--green);
     display: grid; place-items: center;
-    font-family: var(--font-hud); font-size: 11px; color: var(--green);
-    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    font-family: var(--font-hud); font-size: 10px; color: var(--green);
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
     background: rgba(0,255,136,0.06);
+    flex-shrink: 0;
   }
 
   .brand-text h1 {
-    font-family: var(--font-hud); font-size: 20px; font-weight: 900;
-    letter-spacing: 7px; color: var(--white);
+    font-family: var(--font-hud); font-size: clamp(13px, 2.5vw, 20px); font-weight: 900;
+    letter-spacing: clamp(3px, 1vw, 7px); color: var(--white);
   }
   .brand-text h1 em { color: var(--green); font-style: normal; }
-  .brand-text p { font-size: 10px; color: var(--white3); letter-spacing: 2px; margin-top: 4px; }
+  .brand-text p {
+    font-size: clamp(8px, 1.2vw, 10px); color: var(--white3);
+    letter-spacing: clamp(1px, 0.5vw, 2px); margin-top: 4px;
+  }
 
-  .header-right { display: flex; align-items: center; gap: 28px; }
+  .header-right { display: flex; align-items: center; gap: 16px; flex-shrink: 0; }
 
   .status-pill {
     display: flex; align-items: center; gap: 8px;
-    padding: 7px 16px; border: 1px solid var(--border2);
-    clip-path: polygon(7px 0%, 100% 0%, calc(100% - 7px) 100%, 0% 100%);
-    font-family: var(--font-hud); font-size: 10px;
+    padding: 6px 12px; border: 1px solid var(--border2);
+    clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+    font-family: var(--font-hud); font-size: 9px;
     letter-spacing: 2px; color: var(--white3);
   }
-  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--white3); transition: all 0.5s; }
+  .status-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--white3); transition: all 0.5s; }
   .status-dot.live { background: var(--green); box-shadow: 0 0 8px var(--green); animation: blink 2s ease-in-out infinite; }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  #clock { font-family: var(--font-data); font-size: 13px; color: var(--green); letter-spacing: 3px; }
+  #clock { font-family: var(--font-data); font-size: clamp(11px, 1.5vw, 13px); color: var(--green); letter-spacing: 3px; }
 
   /* ═══ DEVICE BAR ═══ */
   .device-bar {
-    display: flex; align-items: center; gap: 14px;
-    padding: 9px 40px; border-bottom: 1px solid var(--border2);
+    display: flex; align-items: center; gap: 12px;
+    padding: 8px 24px; border-bottom: 1px solid var(--border2);
+    flex-wrap: wrap;
   }
   .device-tag {
     font-family: var(--font-hud); font-size: 9px; letter-spacing: 4px; color: var(--green);
     border: 1px solid var(--green); padding: 3px 10px;
     clip-path: polygon(5px 0%, 100% 0%, calc(100% - 5px) 100%, 0% 100%);
+    flex-shrink: 0;
   }
   #gpu-name { font-size: 11px; color: var(--white3); letter-spacing: 1px; }
 
   /* ═══ ALERT BANNER ═══ */
   #alert-banner {
-    display: none; padding: 11px 40px;
+    display: none; padding: 10px 24px;
     border-bottom: 1px solid var(--danger);
-    font-family: var(--font-hud); font-size: 10px;
-    letter-spacing: 3px; color: var(--danger);
+    font-family: var(--font-hud); font-size: 9px;
+    letter-spacing: 2px; color: var(--danger);
   }
 
   /* ═══ METRIC GRID ═══ */
   .metric-grid {
-    display: grid; grid-template-columns: 1fr 1fr;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 1px; background: var(--border2);
-    margin: 24px; border: 1px solid var(--border2);
+    margin: 16px; border: 1px solid var(--border2);
+  }
+
+  @media (max-width: 768px) {
+    .metric-grid { grid-template-columns: 1fr; margin: 12px; }
   }
 
   .metric-card {
-    background: var(--surface); padding: 32px 36px;
-    display: flex; flex-direction: column; gap: 24px;
+    background: var(--surface);
+    padding: clamp(16px, 3vw, 32px) clamp(16px, 3vw, 36px);
+    display: flex; flex-direction: column; gap: clamp(16px, 2.5vw, 24px);
     opacity: 0; transform: translateY(12px);
     animation: fadeUp 0.4s ease forwards;
   }
@@ -111,12 +125,12 @@
   .metric-card:nth-child(4){animation-delay:0.20s}
   @keyframes fadeUp { to{opacity:1;transform:translateY(0)} }
 
-  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; }
-  .card-left { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+  .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .card-left { display: flex; flex-direction: column; gap: 10px; flex: 1; min-width: 0; }
 
   .metric-title {
-    font-family: var(--font-hud); font-size: 11px; font-weight: 700;
-    letter-spacing: 4px; text-transform: uppercase; color: var(--white);
+    font-family: var(--font-hud); font-size: clamp(9px, 1.2vw, 11px); font-weight: 700;
+    letter-spacing: clamp(2px, 0.5vw, 4px); text-transform: uppercase; color: var(--white);
   }
 
   .info-btn {
@@ -125,13 +139,14 @@
     color: var(--white3); font-family: var(--font-data);
     font-size: 11px; padding: 5px 12px; cursor: pointer; letter-spacing: 1px;
     transition: border-color 0.2s, color 0.2s; width: fit-content;
+    white-space: nowrap;
   }
   .info-btn:hover { border-color: var(--green); color: var(--green); }
 
   .info-drawer {
-    display: none; margin-top: 4px; padding: 14px 16px;
+    display: none; margin-top: 4px; padding: 12px 14px;
     border: 1px solid var(--border2); border-left: 2px solid var(--green);
-    font-size: 11px; color: var(--white3); line-height: 1.8;
+    font-size: clamp(10px, 1.2vw, 11px); color: var(--white3); line-height: 1.8;
   }
   .info-drawer.open { display: block; }
   .info-drawer strong { color: var(--white2); }
@@ -139,18 +154,19 @@
   .card-right { text-align: right; flex-shrink: 0; }
 
   .metric-value {
-    font-family: var(--font-hud); font-size: 64px; font-weight: 900;
-    line-height: 1; letter-spacing: -1px; color: var(--green); transition: color 0.4s;
+    font-family: var(--font-hud);
+    font-size: clamp(36px, 6vw, 64px);
+    font-weight: 900; line-height: 1;
+    letter-spacing: -1px; color: var(--green); transition: color 0.4s;
   }
   .metric-value.warn   { color: var(--warn); }
   .metric-value.danger { color: var(--danger); }
 
-  .metric-unit { margin-top: 6px; font-family: var(--font-hud); font-size: 10px; letter-spacing: 3px; color: var(--white3); }
-  .metric-sub  { margin-top: 5px; font-size: 11px; color: var(--white3); letter-spacing: 1px; }
+  .metric-unit { margin-top: 6px; font-family: var(--font-hud); font-size: clamp(8px, 1vw, 10px); letter-spacing: 3px; color: var(--white3); }
+  .metric-sub  { margin-top: 5px; font-size: clamp(9px, 1.1vw, 11px); color: var(--white3); letter-spacing: 1px; }
 
   /* ═══ BAR ═══ */
   .bar-section { display: flex; flex-direction: column; gap: 6px; }
-
   .bar-track { height: 3px; background: var(--border2); position: relative; overflow: hidden; }
   .bar-fill {
     height: 100%; background: var(--green);
@@ -159,61 +175,78 @@
   .bar-fill.warn   { background: var(--warn); }
   .bar-fill.danger { background: var(--danger); }
 
-  /* tick marks sit above the labels row */
   .bar-ticks { position: relative; height: 6px; }
   .tick { position: absolute; top: 0; width: 1px; height: 6px; }
   .tick.warn-tick   { background: var(--warn);   opacity: 0.6; }
   .tick.danger-tick { background: var(--danger);  opacity: 0.6; }
 
-  /* labels — all absolutely positioned to match tick % */
   .bar-labels {
     position: relative; height: 14px;
-    font-size: 10px; color: var(--white3); letter-spacing: 1px;
+    font-size: clamp(8px, 1vw, 10px); color: var(--white3); letter-spacing: 1px;
   }
   .bar-labels span { position: absolute; white-space: nowrap; }
-  .bar-labels span.lbl-left   { left: 0; }
-  .bar-labels span.lbl-right  { right: 0; }
+  .bar-labels span.lbl-left  { left: 0; }
+  .bar-labels span.lbl-right { right: 0; }
   .bar-labels span.lbl-center { transform: translateX(-50%); }
 
+  /* Hide middle labels on small phones to avoid overlap */
+  @media (max-width: 400px) {
+    .bar-labels span.lbl-center,
+    .bar-labels .lbl-warn,
+    .bar-labels .lbl-alert { display: none; }
+  }
+
   /* ═══ SPARKLINE ═══ */
-  .spark-section { height: 52px; }
-  .spark-section canvas { width: 100% !important; height: 52px !important; display: block; }
+  .spark-section { height: clamp(36px, 5vw, 52px); }
+  .spark-section canvas { width: 100% !important; height: 100% !important; display: block; }
 
   /* ═══ PEAKS ROW ═══ */
   .peaks-row {
     display: grid; grid-template-columns: repeat(4,1fr);
     gap: 1px; background: var(--border2);
-    margin: 1px 24px 0; border: 1px solid var(--border2); border-top: none;
+    margin: 1px 16px 0; border: 1px solid var(--border2); border-top: none;
   }
+
+  @media (max-width: 600px) {
+    .peaks-row { grid-template-columns: repeat(2,1fr); margin: 1px 12px 0; }
+  }
+
   .peak-cell {
-    background: var(--surface2); padding: 16px 24px;
+    background: var(--surface2);
+    padding: clamp(10px, 2vw, 16px) clamp(12px, 2.5vw, 24px);
     display: flex; flex-direction: column; gap: 6px;
     opacity: 0; animation: fadeUp 0.4s ease forwards; animation-delay: 0.25s;
   }
-  .peak-label { font-family: var(--font-hud); font-size: 9px; letter-spacing: 3px; color: var(--white3); text-transform: uppercase; }
-  .peak-value { font-family: var(--font-hud); font-size: 18px; color: var(--white); }
+  .peak-label { font-family: var(--font-hud); font-size: clamp(7px, 1vw, 9px); letter-spacing: 2px; color: var(--white3); text-transform: uppercase; }
+  .peak-value { font-family: var(--font-hud); font-size: clamp(14px, 2vw, 18px); color: var(--white); }
 
   /* ═══ SNS PANEL ═══ */
   .sns-panel {
-    margin: 1px 24px 24px; border: 1px solid var(--border2); border-top: none;
-    background: var(--surface2); padding: 22px 28px;
+    margin: 1px 16px 16px; border: 1px solid var(--border2); border-top: none;
+    background: var(--surface2); padding: clamp(14px, 2.5vw, 22px) clamp(16px, 3vw, 28px);
   }
   .sns-title {
-    font-family: var(--font-hud); font-size: 10px; letter-spacing: 4px; color: var(--white);
-    margin-bottom: 18px; display: flex; align-items: center; gap: 10px;
+    font-family: var(--font-hud); font-size: clamp(8px, 1.2vw, 10px);
+    letter-spacing: 3px; color: var(--white);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
   }
-  .sns-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--green); }
-  .sns-fields { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-bottom: 16px; }
+  .sns-title::before { content: ''; display: block; width: 3px; height: 14px; background: var(--green); flex-shrink: 0; }
+  .sns-fields { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 16px; }
+
+  @media (max-width: 600px) {
+    .sns-fields { grid-template-columns: 1fr; gap: 12px; }
+  }
+
   .sns-field { display: flex; flex-direction: column; gap: 7px; }
-  .sns-field label { font-family: var(--font-hud); font-size: 9px; letter-spacing: 3px; color: var(--white3); }
+  .sns-field label { font-family: var(--font-hud); font-size: clamp(7px, 1vw, 9px); letter-spacing: 2px; color: var(--white3); }
   .sns-field input {
     background: var(--bg); border: 1px solid var(--border2);
     color: var(--white); font-family: var(--font-data);
-    font-size: 14px; padding: 9px 14px; outline: none;
-    transition: border-color 0.2s; letter-spacing: 1px;
+    font-size: clamp(12px, 1.5vw, 14px); padding: 8px 12px; outline: none;
+    transition: border-color 0.2s; letter-spacing: 1px; width: 100%;
   }
   .sns-field input:focus { border-color: var(--green); }
-  .sns-status { font-size: 11px; color: var(--white3); letter-spacing: 1px; padding-top: 12px; border-top: 1px solid var(--border2); }
+  .sns-status { font-size: clamp(10px, 1.2vw, 11px); color: var(--white3); letter-spacing: 1px; padding-top: 12px; border-top: 1px solid var(--border2); }
   .sns-status.sent { color: var(--green); }
 
   /* ═══ OVERLAY ═══ */
@@ -229,6 +262,27 @@
   }
   @keyframes spin { to { transform: rotate(360deg); } }
   .conn-label { font-family: var(--font-hud); font-size: 11px; letter-spacing: 5px; color: var(--white3); }
+
+  /* ═══ LARGE DESKTOP (1400px+) ═══ */
+  @media (min-width: 1400px) {
+    header { padding: 20px 40px; }
+    .device-bar { padding: 9px 40px; }
+    #alert-banner { padding: 11px 40px; }
+    .metric-grid { margin: 24px; }
+    .peaks-row { margin: 1px 24px 0; }
+    .sns-panel { margin: 1px 24px 24px; }
+  }
+
+  /* ═══ MOBILE (480px and below) ═══ */
+  @media (max-width: 480px) {
+    header { padding: 12px 16px; }
+    .brand-text p { display: none; }
+    .device-bar { padding: 8px 16px; }
+    .metric-grid { margin: 8px; }
+    .peaks-row { margin: 1px 8px 0; }
+    .sns-panel { margin: 1px 8px 8px; }
+    #clock { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -265,7 +319,6 @@
 <div class="metric-grid">
 
   <!-- ── GPU Utilization ── -->
-  <!-- Bar: 0–100%, warn at 70%, danger at 90% -->
   <div class="metric-card">
     <div class="card-header">
       <div class="card-left">
@@ -276,7 +329,6 @@
           executing work per second. <strong>100%</strong> means every CUDA core is saturated —
           ideal for compute workloads. Idle desktop sits near <strong>0–5%</strong>. The RTX 4090
           has <strong>16,384 CUDA cores</strong> across 128 Streaming Multiprocessors.
-          High utilization with stable temperature indicates healthy sustained compute.
           <br/><br/>
           <strong>Warn</strong> above 70% &nbsp;·&nbsp; <strong>Alert</strong> above 90%
         </div>
@@ -293,11 +345,10 @@
         <div class="tick warn-tick"   style="left:70%"></div>
         <div class="tick danger-tick" style="left:90%"></div>
       </div>
-      <!-- Labels pinned to exact tick positions -->
       <div class="bar-labels">
         <span class="lbl-left">0%</span>
-        <span class="lbl-center" style="left:70%">70% warn</span>
-        <span class="lbl-center" style="left:90%">90% alert</span>
+        <span class="lbl-center lbl-warn" style="left:70%">70% warn</span>
+        <span class="lbl-center lbl-alert" style="left:90%">90% alert</span>
         <span class="lbl-right">100%</span>
       </div>
     </div>
@@ -305,7 +356,6 @@
   </div>
 
   <!-- ── VRAM Usage ── -->
-  <!-- Bar: 0–vramTotal MB, warn at 70%, danger at 90% -->
   <div class="metric-card">
     <div class="card-header">
       <div class="card-left">
@@ -314,9 +364,7 @@
         <div class="info-drawer" id="drawer-vram">
           <strong>VRAM (Video RAM)</strong> is dedicated GPU memory for textures, frame buffers,
           model weights, and compute data. The RTX 4090 has <strong>24 GB of GDDR6X VRAM</strong>
-          with approximately 1 TB/s of bandwidth. Exhausting VRAM causes workloads to spill into
-          slower system RAM, dramatically cutting performance. For ML training, VRAM directly caps
-          batch size and model parameter count.
+          with approximately 1 TB/s of bandwidth.
           <br/><br/>
           <strong>Warn</strong> above 70% &nbsp;·&nbsp; <strong>Alert</strong> above 90%
         </div>
@@ -335,8 +383,8 @@
       </div>
       <div class="bar-labels">
         <span class="lbl-left">0 MB</span>
-        <span class="lbl-center" style="left:70%">70% warn</span>
-        <span class="lbl-center" style="left:90%">90% alert</span>
+        <span class="lbl-center lbl-warn" style="left:70%">70% warn</span>
+        <span class="lbl-center lbl-alert" style="left:90%">90% alert</span>
         <span class="lbl-right" id="vram-max-label">— MB</span>
       </div>
     </div>
@@ -344,9 +392,10 @@
   </div>
 
   <!-- ── Temperature ── -->
-  <!-- Bar: 0–89°C scale -->
-  <!-- warn tick:   75/89 = 84.27% -->
-  <!-- danger tick: 83/89 = 93.26% -->
+  <!--
+    Bar: 0–89°C. warn=75°C (84.27%), alert=83°C (93.26%).
+    Labels: warn right-anchored to tick, alert left-anchored to tick → no overlap.
+  -->
   <div class="metric-card">
     <div class="card-header">
       <div class="card-left">
@@ -354,10 +403,8 @@
         <button class="info-btn" onclick="toggleDrawer('drawer-temp', this)">▸ What is this?</button>
         <div class="info-drawer" id="drawer-temp">
           <strong>GPU Die Temperature</strong> is read directly from an on-die thermal sensor.
-          The RTX 4090 begins thermal throttling at <strong>83°C</strong> — above this the driver
-          reduces clock speeds to protect the hardware. Maximum safe junction temperature is
-          <strong>89°C</strong>. Sustained operation above 80°C suggests inadequate airflow or
-          degraded thermal paste. Normal idle range is 30–50°C.
+          The RTX 4090 begins thermal throttling at <strong>83°C</strong>. Maximum safe junction
+          temperature is <strong>89°C</strong>. Normal idle range is 30–50°C.
           <br/><br/>
           <strong>Warn</strong> above 75°C &nbsp;·&nbsp; <strong>Alert</strong> above 83°C
         </div>
@@ -374,30 +421,25 @@
         <div class="tick warn-tick"   style="left:84.27%"></div>
         <div class="tick danger-tick" style="left:93.26%"></div>
       </div>
-      <!-- Labels pinned to exact calculated positions -->
       <div class="bar-labels">
         <span class="lbl-left">0°C</span>
-        <span class="lbl-center" style="left:84.27%">75°C warn</span>
-        <span class="lbl-center" style="left:93.26%">83°C alert</span>
-        <span class="lbl-right">89°C max</span>
+        <span style="position:absolute; left:84.27%; transform:translateX(-50%);">75°C</span>
+        <span style="position:absolute; left:93.26%; transform:translateX(-50%);">89°C</span>
       </div>
     </div>
     <div class="spark-section"><canvas id="spark-temp"></canvas></div>
   </div>
 
   <!-- ── Power Draw ── -->
-  <!-- Bar: 0–powerLimit W, warn at 70%, danger at 90% -->
   <div class="metric-card">
     <div class="card-header">
       <div class="card-left">
         <div class="metric-title">Power Draw</div>
         <button class="info-btn" onclick="toggleDrawer('drawer-power', this)">▸ What is this?</button>
         <div class="info-drawer" id="drawer-power">
-          <strong>Power Draw</strong> is instantaneous wattage consumed by the GPU, measured via
-          the PCIe power delivery system. The RTX 4090 has a default <strong>TDP of 450W</strong>,
-          raisable to approximately 600W via power limit override tools. High wattage with low
-          utilization suggests a memory-bound workload. When draw approaches the configured power
-          limit, the driver throttles clocks to stay within budget.
+          <strong>Power Draw</strong> is instantaneous wattage consumed by the GPU. The RTX 4090
+          has a default <strong>TDP of 450W</strong>. When draw approaches the power limit, the
+          driver throttles clocks to stay within budget.
           <br/><br/>
           <strong>Warn</strong> above 70% of limit &nbsp;·&nbsp; <strong>Alert</strong> above 90% of limit
         </div>
@@ -416,8 +458,8 @@
       </div>
       <div class="bar-labels">
         <span class="lbl-left">0W</span>
-        <span class="lbl-center" style="left:70%">70% warn</span>
-        <span class="lbl-center" style="left:90%">90% alert</span>
+        <span class="lbl-center lbl-warn" style="left:70%">70% warn</span>
+        <span class="lbl-center lbl-alert" style="left:90%">90% alert</span>
         <span class="lbl-right" id="power-max-label">— W</span>
       </div>
     </div>
@@ -465,9 +507,6 @@
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// State
-// ─────────────────────────────────────────────
 const HIST    = 60;
 const COOL_MS = 5 * 60 * 1000;
 
@@ -478,29 +517,19 @@ const hist = {
   power: Array(HIST).fill(null),
 };
 
-// Per-metric sparkline floors
-// temp floor = 20 so idle 36°C renders mid-graph, not pinned to top
-const FLOOR = { util: 0, vram: 0, temp: 20, power: 0 };
-
+const FLOOR    = { util: 0, vram: 0, temp: 20, power: 0 };
 const peaks    = { util: 0, vram: 0, temp: 0, power: 0 };
 const cooldown = { util: 0, temp: 0, power: 0 };
 
-// Populated from live data only — never hardcoded
 let vramTotal  = null;
 let powerLimit = null;
 
-// ─────────────────────────────────────────────
-// Clock
-// ─────────────────────────────────────────────
 function tick() {
   document.getElementById('clock').textContent = new Date().toTimeString().slice(0, 8);
 }
 setInterval(tick, 1000);
 tick();
 
-// ─────────────────────────────────────────────
-// Info drawers
-// ─────────────────────────────────────────────
 function toggleDrawer(id, btn) {
   const drawer = document.getElementById(id);
   const isOpen = drawer.classList.contains('open');
@@ -512,21 +541,14 @@ function toggleDrawer(id, btn) {
   }
 }
 
-// ─────────────────────────────────────────────
-// Color class
-// ─────────────────────────────────────────────
 function colorClass(pct, warnAt, dangerAt) {
   if (pct >= dangerAt) return 'danger';
   if (pct >= warnAt)   return 'warn';
   return '';
 }
 
-// ─────────────────────────────────────────────
-// Update card
-// ─────────────────────────────────────────────
 function updateCard(ids, value, max, warnPct, dangerPct, key, decimals, subText) {
   if (max === null || max <= 0) return 0;
-
   const pct = Math.min((value / max) * 100, 100);
   const c   = colorClass(pct, warnPct, dangerPct);
 
@@ -547,11 +569,6 @@ function updateCard(ids, value, max, warnPct, dangerPct, key, decimals, subText)
   return pct;
 }
 
-// ─────────────────────────────────────────────
-// Sparkline
-// Padding above max prevents value from being
-// pinned to the top of the chart when stable.
-// ─────────────────────────────────────────────
 function drawSparkline(canvasId, data, colorCls, floor) {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
@@ -571,12 +588,10 @@ function drawSparkline(canvasId, data, colorCls, floor) {
 
   const dataMax = Math.max(...valid);
   const dataMin = Math.min(...valid);
-
-  // Add headroom above max so the line sits mid-chart when stable
   const padding = (dataMax - dataMin) < 5 ? 10 : 2;
-  const yMax = dataMax + padding;
-  const yMin = Math.max(Math.min(dataMin, floor), 0);
-  const range = yMax - yMin || 1;
+  const yMax    = dataMax + padding;
+  const yMin    = Math.max(Math.min(dataMin, floor), 0);
+  const range   = yMax - yMin || 1;
 
   const color = colorCls === 'danger' ? '#ff4444'
               : colorCls === 'warn'   ? '#ffaa00'
@@ -589,7 +604,6 @@ function drawSparkline(canvasId, data, colorCls, floor) {
     y: H - ((v - yMin) / range) * (H - 6) - 3,
   }));
 
-  // Gradient fill
   const grad = ctx.createLinearGradient(0, 0, 0, H);
   grad.addColorStop(0, color + '33');
   grad.addColorStop(1, color + '00');
@@ -602,7 +616,6 @@ function drawSparkline(canvasId, data, colorCls, floor) {
   ctx.fillStyle = grad;
   ctx.fill();
 
-  // Line — solid stroke, no alpha fade
   ctx.beginPath();
   points.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y));
   ctx.strokeStyle = color;
@@ -610,16 +623,12 @@ function drawSparkline(canvasId, data, colorCls, floor) {
   ctx.stroke();
 }
 
-// ─────────────────────────────────────────────
-// AWS SNS alert
-// ─────────────────────────────────────────────
 async function sendAlert(metric, value, threshold) {
   const now = Date.now();
   if (now - cooldown[metric] < COOL_MS) return;
   cooldown[metric] = now;
 
   const powerPct = powerLimit ? Math.round((value / powerLimit) * 100) : 0;
-
   const messages = {
     util:  `GPU ALERT: Utilization is ${value}% — exceeds threshold of ${threshold}%`,
     temp:  `GPU ALERT: Temperature is ${value}C — exceeds threshold of ${threshold}C`,
@@ -639,14 +648,9 @@ async function sendAlert(metric, value, threshold) {
       s.className = 'sns-status sent';
       setTimeout(() => { document.getElementById('alert-banner').style.display = 'none'; }, 8000);
     }
-  } catch (err) {
-    console.error('SNS alert failed:', err);
-  }
+  } catch (err) { console.error('SNS alert failed:', err); }
 }
 
-// ─────────────────────────────────────────────
-// WebSocket
-// ─────────────────────────────────────────────
 function connect() {
   const ws = new WebSocket(`wss://${location.host}/ws`);
 
@@ -677,30 +681,24 @@ function connect() {
 
     updateCard(
       { val:'val-util', bar:'bar-util', spark:'spark-util', sub:'sub-util' },
-      d.gpu_util, 100, 70, 90, 'util', 0,
-      `${d.gpu_util}% of 100%`
+      d.gpu_util, 100, 70, 90, 'util', 0, `${d.gpu_util}% of 100%`
     );
 
     updateCard(
       { val:'val-vram', bar:'bar-vram', spark:'spark-vram', sub:'sub-vram' },
       d.vram_used_mb, vramTotal, 70, 90, 'vram', 0,
-      vramTotal
-        ? `${Math.round(d.vram_used_mb)} MB of ${Math.round(vramTotal)} MB`
-        : `${Math.round(d.vram_used_mb)} MB`
+      vramTotal ? `${Math.round(d.vram_used_mb)} MB of ${Math.round(vramTotal)} MB` : `${Math.round(d.vram_used_mb)} MB`
     );
 
     updateCard(
       { val:'val-temp', bar:'bar-temp', spark:'spark-temp', sub:'sub-temp' },
-      d.temperature, 89, 75, 83, 'temp', 0,
-      `${d.temperature}°C  ·  throttle at 83°C`
+      d.temperature, 89, 75, 83, 'temp', 0, `${d.temperature}°C  ·  throttle at 83°C`
     );
 
     const powerPct = updateCard(
       { val:'val-power', bar:'bar-power', spark:'spark-power', sub:'sub-power' },
       d.power_w, powerLimit, 70, 90, 'power', 1,
-      powerLimit
-        ? `${d.power_w}W of ${Math.round(powerLimit)}W limit`
-        : `${d.power_w}W`
+      powerLimit ? `${d.power_w}W of ${Math.round(powerLimit)}W limit` : `${d.power_w}W`
     );
 
     if (d.gpu_util    >= tUtil)  sendAlert('util',  d.gpu_util,    tUtil);

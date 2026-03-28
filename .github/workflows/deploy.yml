@@ -47,13 +47,15 @@ jobs:
       - name: Force ECS service redeployment
         run: |
           aws ecs update-service \
-            --cluster $ECS_CLUSTER \
-            --service $ECS_SERVICE \
-            --force-new-deployment
+            --cluster  $ECS_CLUSTER \
+            --service  $ECS_SERVICE \
+            --force-new-deployment \
+            --region   $AWS_REGION
 
       - name: Wait for deployment to stabilize
         run: |
           aws ecs wait services-stable \
-            --cluster $ECS_CLUSTER \
-            --services $ECS_SERVICE
+            --cluster  $ECS_CLUSTER \
+            --services $ECS_SERVICE \
+            --region   $AWS_REGION
           echo "Deployment complete"
